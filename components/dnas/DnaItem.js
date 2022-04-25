@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 import Card from '../ui/Card';
 import classes from './DnaItem.module.css';
 
