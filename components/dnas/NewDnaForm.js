@@ -18,7 +18,7 @@ function NewDnaForm(props) {
       sequence: enteredSequence,
     };
 
-    props.onAddMeetup(dnaData);
+    props.onAddDna(dnaData);
   }
 
   return (

@@ -3,5 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
+  "/new-Dna": "pages/new-Dna.js",
   "/test-Dna": "pages/test-Dna.js"
 }
