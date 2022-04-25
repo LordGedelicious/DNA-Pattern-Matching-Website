@@ -13,13 +13,15 @@ function DnaItem() {
     <ul className={classes.item}>
       <Card>
         <div className={classes.content}>
-          <h2>About Us</h2>
+          <h1>About Us</h1>
           <h3>Website ini merupakan tugas matakuliah IF2210</h3>
           <h3>Terdapat beberapa fitur dari website ini, yaitu</h3>
-          <ul>
-          <li>Input File DNA</li>
-          <li>Mendeteksi Pattern Match DNA</li>
-        </ul> 
+          <Card>
+            <div className={classes.test}>
+              <h3>Input File DNA</h3>
+              <h3>Mendeteksi Pattern Match DNA</h3>
+            </div>
+          </Card>
         </div>
       </Card>
     </ul>

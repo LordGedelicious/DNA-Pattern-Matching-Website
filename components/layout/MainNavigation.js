@@ -14,6 +14,9 @@ function MainNavigation() {
             <Link href='/new-Dna'>Add New DNA Sequence</Link>
           </li>
           <li>
+            <Link href='/test-Dna'>DNA Test</Link>
+          </li>
+          <li>
             <Link href='/'>Fun Facts</Link>
           </li>
         </ul>

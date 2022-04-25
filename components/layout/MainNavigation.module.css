@@ -6,7 +6,7 @@
   justify-content: space-between;
   background-color: #DAB88B;
   padding: 0 10%;
-  border-top: 15px solid #ffddb5;
+  border-top: 0px solid #ffddb5;
 }
 
 .header ul {
@@ -31,6 +31,7 @@
   font-size: 2rem;
   color: white;
   font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
   border-style: groove;
   border: black;
   border-radius: 8px;
@@ -39,5 +40,5 @@
 .header a:hover,
 .header a:active,
 .header a.active {
-  color: white;
+  color: rgb(248, 211, 139);
 }
