@@ -18,7 +18,7 @@ module.exports = {
             '/ResultsDNA': { page: '/results-Dna' },
             '/AddDNA': { page: '/new-Dna' },
             '/CheckDNA': { page: '/test-Dna' },
-            '/DnaSearchForm': { page: '/search-Dna'}
+            '/DNASearchForm': { page: '/search-Dna' }
         }
     }
 }

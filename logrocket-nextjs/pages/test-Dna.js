@@ -6,8 +6,7 @@ function DnaTestPage() {
         console.log(enteredDnaData);
     }
 
-    return <DnaTestForm onAddDna = { addDnaHandler }
-    />
+    return <DnaTestForm onAddDna = { addDnaHandler }/>;
 }
 
 export default DnaTestPage;

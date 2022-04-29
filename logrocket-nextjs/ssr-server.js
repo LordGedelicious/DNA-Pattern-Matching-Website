@@ -30,13 +30,12 @@ async function access_database(newListing, searchKeyword, functionPurpose) {
         await client.connect();
         console.log("Connected correctly to server");
         if (functionPurpose == "addToDiseaseList") {
-            let isValueAlreadyExist = access_database(newListing, searchKeyword = newListing['disease_name'], "searchDisease");
+            let isValueAlreadyExist = await access_database(newListing, searchKeyword, "searchDisease");
             if (isValueAlreadyExist) {
                 console.log("Disease already exist");
                 return false;
             } else {
-                var collection = client.db("test").collection("disease");
-                var result = await collection.insertOne(obj);
+                var result = await client.db("disease_db").collection("disease_list").insertOne(newListing);
                 console.log(`New disease has been added with the following id: ${result.insertedId}`);
                 return `New disease has been added with the following id: ${result.insertedId}`;
             }
@@ -132,7 +131,7 @@ app.prepare()
                 return res.redirect('back');
             };
             let newListing = { disease_name: diseaseName, disease_code: diseaseCode };
-            let newListingAddded = access_database(newListing, "", "addToDiseaseList");
+            let newListingAddded = access_database(newListing, diseaseCode, "addToDiseaseList");
             //TODO : dia udah ga ngepush, tapi tetep aja harus dibenerin popup I/Onya
             if (!newListingAddded) {
                 dialog.info("Failed to add new listing", "Failed!");
