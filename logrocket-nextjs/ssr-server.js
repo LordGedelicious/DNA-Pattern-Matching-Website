@@ -15,7 +15,9 @@ const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
 var fileupload = require('express-fileupload');
 var formidable = require('formidable');
+const axios = require('axios');
 const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -43,20 +45,49 @@ async function access_database(newListing, searchKeyword, functionPurpose) {
             console.log(`New listing created in test_results collections with the following id: ${result.insertedId}`);
             return `New listing created in test_results with the following id: ${result.insertedId}`;
         } else if (functionPurpose == "searchDisease") {
+            // const result = await client.db("disease_db").collection("disease_list").findOne({ "disease_name": searchKeyword });
+            // if (result) {
+            //     console.log(`Search results: ${result['disease_code']}`);
+            //     return result['disease_code'];
+            // } else {
+            //     console.log("No results found");
+            //     return null;
+            // }
             const result = await client.db("disease_db").collection("disease_list").findOne({ "disease_name": searchKeyword });
-            if (result) {
-                console.log(`Search results: ${result['disease_code']}`);
-                return result['disease_code'];
-            } else {
-                console.log("No results found");
-                return null;
-            }
+            return result['disease_code'];
         }
     } catch (e) {
         console.log(e.message);
     }
 }
 
+async function stringMatching(tempPatientData, searchKeyword, targetSequence) {
+    const result = await access_database(tempPatientData, searchKeyword, "searchDisease").then(function(result) {
+        if (result) {
+            console.log(`Search results: ${result}`);
+            console.log("UDAH MASUKKK");
+            var diseaseCode = result;
+            var testByBM = bm.bm(targetSequence, diseaseCode);
+            // var testByKMP = kmp.kmp(targetSequence, diseaseCode);
+            // var testBySimilarity = similarity.similarity(targetSequence, diseaseCode);
+            if (testByBM == true) {
+                tempPatientData['similarity'] = "100%";
+                tempPatientData['is_sick'] = true;
+                console.log("Patient is sick");
+            } else {
+                // tempPatientData['similarity'] = parseFloat(testBySimilarity).toFixed(2) + "%";
+                // if (testBySimilarity > 0.8) {
+                //     tempPatientData['is_sick'] = true;
+                // } else {
+                //     tempPatientData['is_sick'] = false;
+                // }
+                console.log("GWSSSS");
+            }
+        } else {
+            dialog.info("Disease not found");
+        };
+    });
+};
 // async function listdatabases(client) {
 //     databasesList = await client.db().admin().listDatabases();
 //     console.log("Databases:");
@@ -75,10 +106,9 @@ async function access_database(newListing, searchKeyword, functionPurpose) {
 //     }
 // }
 
+const server = express();
 app.prepare()
     .then(() => {
-        const server = express()
-
         server.use(fileupload());
         server.use(express.urlencoded({ extended: true }));
 
@@ -89,12 +119,6 @@ app.prepare()
         server.listen(3000, (err) => {
             if (err) throw err
             console.log('> Ready on http://localhost:3000')
-        })
-
-        server.get('/p/:id', (req, res) => {
-            const actualPage = '/post'
-            const queryParams = { id: req.params.id }
-            app.render(req, res, actualPage, queryParams)
         })
 
         server.post('/AddDNA', (req, res) => {
@@ -127,29 +151,13 @@ app.prepare()
                 dialog.info("Invalid input", "Input Rejected!");
                 return res.redirect('back');
             };
-            let isDiseaseExist = access_database(patientCode, targetDisease, "searchDisease");
-            console.log(isDiseaseExist);
-            if (isDiseaseExist) {
-                let isSame = false;
-                let isSameResultByBM = bm.bm(patientCode, isDiseaseExist);
-                // let isSameResultByKMP = kmp.kmp(patientCode, isDiseaseExist);
-                // if (isSameResultByBM && isSameResultByKMP) { FIX NANTI
-                if (isSameResultByBM) {
-                    let callDate = new Date();
-                    let date = ("0" + date_ob.getDate()).slice(-2);
-                    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-                    let year = date_ob.getFullYear();
-                    let currentDate = year + "-" + month + "-" + date;
-                    let patientData = { test_date: currentDate, patient_name: patientName, tested_disease: targetDisease, similarity: '100%', is_sick: true };
-                    let addListingToTestResults = access_database(patientData, targetDisease, "addToTestResults");
-                    if (!addListingToTestResults) {
-                        dialog.info("Failed to add new listing", "Failed!");
-                    } else {
-                        dialog.info("New listing added", "Success!");
-                    }
-                } else {
-                    dialog.info("No match found", "No match found!");
-                }
-            }
+            var date_ob = new Date();
+            let date = ("0" + date_ob.getDate()).slice(-2);
+            let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+            let year = date_ob.getFullYear();
+            let currentDate = year + "-" + month + "-" + date;
+            let patientData = { test_date: currentDate, patient_name: patientName, tested_disease: targetDisease };
+            stringMatching(patientData, targetDisease, patientCode);
+            res.redirect('back');
         })
     });
