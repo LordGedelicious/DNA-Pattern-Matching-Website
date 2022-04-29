@@ -1,3 +1,4 @@
+var tools = require('./validateInput');
 const express = require("express");
 const next = require('next')
 const fs = require('fs')
@@ -34,17 +35,17 @@ async function listdatabases(client) {
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
 
-function validateInput(input) {
-    const regex = /(A|T|C|G)*/g;
-    var a = Array.from(input.match(regex)).toString().replace(/,\s*$/, "");
-    console.log(a);
-    console.log(input);
-    if (a.length != input.length) {
-        return false;
-    } else {
-        return true;
-    }
-}
+// function validateInput(input) {
+//     const regex = /(A|T|C|G)*/g;
+//     var a = Array.from(input.match(regex)).toString().replace(/,\s*$/, "");
+//     console.log(a);
+//     console.log(input);
+//     if (a.length != input.length) {
+//         return false;
+//     } else {
+//         return true;
+//     }
+// }
 
 app.prepare()
     .then(() => {
@@ -73,7 +74,7 @@ app.prepare()
             let diseaseName = req.body.diseaseName;
             let diseaseCode = req.files.diseaseCode.data.toString('utf8');
             console.log(`The disease is: ${diseaseName} and the code is: ${diseaseCode}`);
-            let isInputValid = validateInput(diseaseCode);
+            let isInputValid = tools.validateInput(diseaseCode);
             if (!isInputValid) {
                 dialog.info("Invalid input");
             } else {
