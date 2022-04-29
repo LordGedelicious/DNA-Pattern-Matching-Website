@@ -11,13 +11,13 @@ function MainNavigation() {
             <Link href='/'>Home</Link>
           </li>
           <li>
-            <Link href='/new-Dna'>Add New DNA Sequence</Link>
+            <Link href='/AddDNA'>Add New DNA Sequence</Link>
           </li>
           <li>
-            <Link href='/test-Dna'>DNA Test</Link>
+            <Link href='/CheckDNA'>DNA Test</Link>
           </li>
           <li>
-            <Link href='/'>Fun Facts</Link>
+            <Link href='/ResultsDNA'>DNA Test History</Link>
           </li>
         </ul>
       </nav>

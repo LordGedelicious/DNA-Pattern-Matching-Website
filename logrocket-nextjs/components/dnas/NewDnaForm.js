@@ -3,15 +3,26 @@ import { useRef } from 'react';
 import Card from '../ui/Card';
 import classes from './NewDnaForm.module.css';
 
+
 function NewDnaForm(props) {
   const penyakitInputRef = useRef();
   const dnasequenceInputRef = useRef();
+  // const dialog = require('dialog-node');
 
   function submitHandler(event) {
     event.preventDefault();
-
+    const fs = require('fs');
     const enteredPenyakit = penyakitInputRef.current.value;
     const enteredSequence = dnasequenceInputRef.current.value;
+
+    fs.readFile(enteredSequence, 'utf8', (err, data) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log(data);
+      // dialog.info("Anda telah memasukkan penyakit " + enteredPenyakit + "dengan kode genetik " + data, "Informasi");
+    });
 
     const dnaData = {
       penyakit: enteredPenyakit,

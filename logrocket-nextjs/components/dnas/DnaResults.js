@@ -2,6 +2,8 @@ import DnaResult from './DnaResult';
 import classes from './DnaResults.module.css';
 
 function DnaResults(props) {
+  const fs = require('fs');
+  const dialog = require('dialog-node');
   return (
     <ul className={classes.list}>
       <h1>Testing</h1>
