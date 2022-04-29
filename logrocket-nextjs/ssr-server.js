@@ -68,21 +68,22 @@ async function stringMatching(tempPatientData, searchKeyword, targetSequence) {
             console.log("UDAH MASUKKK");
             var diseaseCode = result;
             var testByBM = bm.bm(targetSequence, diseaseCode);
-            // var testByKMP = kmp.kmp(targetSequence, diseaseCode);
-            // var testBySimilarity = similarity.similarity(targetSequence, diseaseCode);
-            if (testByBM == true) {
+            var testByKMP = kmp.kmp(targetSequence, diseaseCode);
+            var testBySimilarity = similarity.similarity(targetSequence, diseaseCode);
+            if (testByBM == true && testByKMP == true) {
                 tempPatientData['similarity'] = "100%";
                 tempPatientData['is_sick'] = true;
                 console.log("Patient is sick");
             } else {
-                // tempPatientData['similarity'] = parseFloat(testBySimilarity).toFixed(2) + "%";
-                // if (testBySimilarity > 0.8) {
-                //     tempPatientData['is_sick'] = true;
-                // } else {
-                //     tempPatientData['is_sick'] = false;
-                // }
+                tempPatientData['similarity'] = parseFloat(testBySimilarity).toFixed(2) + "%";
+                if (testBySimilarity > 80) {
+                    tempPatientData['is_sick'] = true;
+                } else {
+                    tempPatientData['is_sick'] = false;
+                }
                 console.log("GWSSSS");
             }
+            access_database(tempPatientData, searchKeyword, "addToTestResults");
         } else {
             dialog.info("Disease not found");
         };
