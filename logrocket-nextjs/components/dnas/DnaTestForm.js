@@ -8,39 +8,23 @@ function DnaTest(){
     const inputSequenceRef = useRef();
     const inputPrediksiPenyakitRef = useRef();
 
-    function submitHandler(event){
-        event.preventDefault();
-
-        const nama = inputNamaRef.current.value;
-        const sequence = inputSequenceRef.current.value;
-        const prediksiPenyakit = inputPrediksiPenyakitRef.current.value;
-
-        const dnaData = {
-            nama: nama,
-            sequence: sequence,
-            prediksiPenyakit: prediksiPenyakit
-        };
-
-        props.onAddMeetup(dnaData);
-    }
-
     return (
         <Card>
-        <form className={classes.form} onSubmit={submitHandler}>
+        <form className={classes.form} action="/CheckDNA" method="POST" encType='multipart/form-data'>
             <div className={classes.control}>
                 <label htmlFor='namaPengguna'>Nama Pengguna</label>
-                <input type='text' required id='nama' ref={inputNamaRef} />
+                <input name='patientName' type='text' required id='nama' ref={inputNamaRef} />
             </div>
             <div className={classes.control}>
                 <label htmlFor='dnasequenceTest'>Sequence DNA</label>
-                <input type='file' required id='sequence' ref={inputSequenceRef} />
+                <input name='patientDNACode' type='file' required id='sequence' ref={inputSequenceRef} />
             </div>
             <div className={classes.control}>
                 <label htmlFor='prediksiPenyakit'>Prediksi Penyakit</label>
-                <input type='text' required id='prediksiPenyakit' ref={inputPrediksiPenyakitRef} />
+                <input name='diseaseTarget' type='text' required id='prediksiPenyakit' ref={inputPrediksiPenyakitRef} />
             </div>
             <div className={classes.actions}>
-                <button>Submit</button>
+                <button type='submit'>Submit</button>
             </div>
         </form>
         </Card>
