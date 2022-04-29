@@ -1,4 +1,7 @@
-var tools = require('./validateInput');
+var validasi = require('./algorithm/validateInput');
+var boyerMoore = require('./algorithm/bm');
+var knuth = require('./algorithm/kmp');
+var similar = require('./algorithm/similarity');
 const express = require("express");
 const next = require('next')
 const fs = require('fs')
@@ -74,7 +77,7 @@ app.prepare()
             let diseaseName = req.body.diseaseName;
             let diseaseCode = req.files.diseaseCode.data.toString('utf8');
             console.log(`The disease is: ${diseaseName} and the code is: ${diseaseCode}`);
-            let isInputValid = tools.validateInput(diseaseCode);
+            let isInputValid = validasi.validateInput(diseaseCode);
             if (!isInputValid) {
                 dialog.info("Invalid input");
             } else {
