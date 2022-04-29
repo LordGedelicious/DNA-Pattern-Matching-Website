@@ -12,7 +12,10 @@
     "dependencies": {
         "dialog-node": "^0.2.1",
         "express": "^4.18.0",
+        "express-fileupload": "^1.3.1",
+        "formidable": "^2.0.1",
         "mongodb": "^4.5.0",
+        "multer": "^1.4.4",
         "next": "12.1.5",
         "react": "18.1.0",
         "react-dom": "18.1.0"
