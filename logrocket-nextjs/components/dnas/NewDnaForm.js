@@ -10,7 +10,7 @@ function NewDnaForm(props) {
   
   return (
     <Card>
-      <form action="/addnewdna" className={classes.form} method='POST' encType='multipart/form-data'>
+      <form action="/AddDNA" className={classes.form} method='POST' encType='multipart/form-data'>
         <div className={classes.control}>
           <label htmlFor='penyakit'>Nama Penyakit</label>
           <input type='text' name='diseaseName' required id='penyakit' ref={penyakitInputRef} />
@@ -20,7 +20,7 @@ function NewDnaForm(props) {
           <input type='file' name='diseaseCode' required id='sequence' ref={dnasequenceInputRef} />
         </div>
         <div className={classes.actions}>
-          <button>Add Input Sequence</button>
+          <button type='submit'>Add Input Sequence</button>
         </div>
       </form>
     </Card>

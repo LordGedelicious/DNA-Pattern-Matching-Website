@@ -35,10 +35,11 @@ app.prepare()
             app.render(req, res, actualPage, queryParams)
         })
 
-        server.post('/addnewdna', (req, res) => {
+        server.post('/AddDNA', (req, res) => {
             let diseaseName = req.body.diseaseName;
             let diseaseCode = req.files.diseaseCode.data.toString('utf8');
-            res.send(`The disease is: ${diseaseName} and the code is: ${diseaseCode}`);
+            console.log(`The disease is: ${diseaseName} and the code is: ${diseaseCode}`);
+            res.redirect('back');
         })
     })
     .catch((ex) => {
