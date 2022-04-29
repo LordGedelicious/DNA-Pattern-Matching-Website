@@ -37,8 +37,8 @@ app.prepare()
 
         server.post('/addnewdna', (req, res) => {
             let diseaseName = req.body.diseaseName;
-            let diseaseCode = req.files.diseaseCode;
-            res.send(`The disease is: ${diseaseName} and the code is: ${diseaseCode.name}`);
+            let diseaseCode = req.files.diseaseCode.data.toString('utf8');
+            res.send(`The disease is: ${diseaseName} and the code is: ${diseaseCode}`);
         })
     })
     .catch((ex) => {
