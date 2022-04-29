@@ -9,7 +9,7 @@ function NewSearchForm(props) {
   
   return (
     <Card>
-      <form action="" className={classes.form} method='' encType=''>
+      <form className={classes.form} action="/Search" method="POST" encType='multipart/form-data'>
         <div className={classes.control}>
           <label htmlFor='search'>Search</label>
           <input type='text' name='search' required id='search' ref={search} />

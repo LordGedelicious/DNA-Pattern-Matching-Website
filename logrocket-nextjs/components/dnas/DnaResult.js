@@ -6,7 +6,7 @@ function DnaResult(props) {
     <li className={classes.item}>
       <Card>
         <div className={classes.content}>
-          <h3>{props.id}. {props.tanggal} - {props.nama} - {props.penyakit} - {props.prediksi}</h3>
+          <h3>{props.id}. {props.tanggal} - {props.nama} - {props.penyakit} - {props.similar} - {props.prediksi}</h3>
         </div>
       </Card>
     </li>

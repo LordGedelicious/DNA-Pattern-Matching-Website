@@ -6,6 +6,7 @@ const DUMMY_RESULTS = [
         tanggal: '25 April 2022',
         nama: "rizky",
         penyakit: 'HIV',
+        similar: "75",
         prediksi: 'FALSE'
     },
     {
@@ -13,6 +14,7 @@ const DUMMY_RESULTS = [
         tanggal: '25 April 2022',
         nama: "gede",
         penyakit: 'HIV',
+        similar: "60",
         prediksi: 'FALSE'
     },
     {
@@ -20,6 +22,7 @@ const DUMMY_RESULTS = [
         tanggal: '25 April 2022',
         nama: "angel",
         penyakit: 'HIV',
+        similar: "60",
         prediksi: 'FALSE'
     }
 ];
