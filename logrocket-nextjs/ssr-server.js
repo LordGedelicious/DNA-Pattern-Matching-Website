@@ -1,4 +1,5 @@
 var validasi = require('./algorithm/validateInput');
+var validasiSearch = require('./algorithm/validateSearch');
 var bm = require('./algorithm/bm');
 var kmp = require('./algorithm/kmp');
 var similarity = require('./algorithm/similarity');
@@ -54,6 +55,8 @@ async function access_database(newListing, searchKeyword, functionPurpose) {
             // }
             const result = await client.db("disease_db").collection("disease_list").findOne({ "disease_name": searchKeyword });
             return result['disease_code'];
+        } else if (functionPurpose == "searchByDate") {
+
         }
     } catch (e) {
         console.log(e.message);
@@ -160,4 +163,28 @@ app.prepare()
             stringMatching(patientData, targetDisease, patientCode);
             res.redirect('back');
         })
+
+        server.post('/SearchDNA', (req, res) => {
+            let searchQuery = req.body.searchQuery;
+            console.log(`The search query is: ${searchQuery}`);
+            let isInputValid = validasiSearch.validateSearch(searchQuery);
+            if (!isInputValid) {
+                dialog.info("Invalid input", "Input Rejected!");
+                return res.redirect('back');
+            }
+            let cleanSearchQuery = searchQuery.split(/(\s+)/).filter(function(e) {
+                return e.trim().length > 0;
+            });
+            console.log(cleanSearchQuery);
+            if (cleanSearchQuery.length == 1) {
+                let targetQuery = cleanSearchQuery[0].replace(/\/\.+/g, '-');
+                console.log(targetQuery);
+                let searchResult = access_database(searchQuery, targetQuery, "searchByDate");
+                if (!searchResult) {
+                    dialog.info("Disease not found", "Failed!");
+                } else {
+                    dialog.info("Disease found", "Success!");
+                }
+            }
+        });
     });
