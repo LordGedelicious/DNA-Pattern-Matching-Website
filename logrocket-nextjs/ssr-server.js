@@ -56,7 +56,8 @@ async function access_database(newListing, searchKeyword, functionPurpose) {
             const result = await client.db("disease_db").collection("disease_list").findOne({ "disease_name": searchKeyword });
             return result['disease_code'];
         } else if (functionPurpose == "searchByDate") {
-
+            const result = await client.db("disease_db").collection("test_results").find({ "date": searchKeyword }).toArray();
+            return result;
         }
     } catch (e) {
         console.log(e.message);
@@ -158,7 +159,7 @@ app.prepare()
             let date = ("0" + date_ob.getDate()).slice(-2);
             let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
             let year = date_ob.getFullYear();
-            let currentDate = year + "-" + month + "-" + date;
+            let currentDate = date + "-" + month + "-" + year;
             let patientData = { test_date: currentDate, patient_name: patientName, tested_disease: targetDisease };
             stringMatching(patientData, targetDisease, patientCode);
             res.redirect('back');
@@ -184,6 +185,7 @@ app.prepare()
                     dialog.info("Disease not found", "Failed!");
                 } else {
                     dialog.info("Disease found", "Success!");
+                    res.send(searchResult);
                 }
             }
         });

@@ -9,10 +9,10 @@ function NewSearchForm(props) {
   
   return (
     <Card>
-      <form className={classes.form} action="/Search" method="POST" encType='multipart/form-data'>
+      <form className={classes.form} action="/SearchDNA" method="POST" encType='multipart/form-data'>
         <div className={classes.control}>
           <label htmlFor='search'>Search</label>
-          <input type='text' name='search' required id='search' ref={search} />
+          <input type='text' name='searchQuery' required id='search' ref={search} />
         </div>
         <div className={classes.actions}>
           <button type='submit'>Add Input Sequence</button>
