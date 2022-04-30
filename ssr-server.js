@@ -45,24 +45,43 @@ async function access_database(newListing, searchKeyword, functionPurpose) {
             console.log(`New listing created in test_results collections with the following id: ${result.insertedId}`);
             return `New listing created in test_results with the following id: ${result.insertedId}`;
         } else if (functionPurpose == "searchDisease") {
-            // const result = await client.db("disease_db").collection("disease_list").findOne({ "disease_name": searchKeyword });
-            // if (result) {
-            //     console.log(`Search results: ${result['disease_code']}`);
-            //     return result['disease_code'];
-            // } else {
-            //     console.log("No results found");
-            //     return null;
-            // }
             const result = await client.db("disease_db").collection("disease_list").findOne({ "disease_name": searchKeyword });
             return result['disease_code'];
         } else if (functionPurpose == "searchByDate") {
-            const result = await client.db("disease_db").collection("test_results").find({ "date": searchKeyword }).toArray();
+            const result = await client.db("disease_db").collection("test_results").findOne({ "test_date": searchKeyword });
             return result;
         }
     } catch (e) {
         console.log(e.message);
     }
 }
+
+async function access_database_search(searchKeyword, functionPurpose) {
+    mongoose.connect("mongodb+srv://mengstima:mengstima@cluster1.gdw1d.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
+
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function() {
+        console.log("Connected correctly to server");
+        if (functionPurpose == "searchByDate") {
+            var query = { "test_date": searchKeyword };
+            var result = db.collection("test_results").find(query).toArray();
+            return result;
+        }
+    });
+}
+
+async function findAllDocuments(searchKeyword, functionPurpose) {
+    const result = await access_database_search(searchKeyword, functionPurpose).then(function(result) {
+        if (result) {
+            console.log(`Search results: ${result}`);
+            return result;
+        } else {
+            dialog.info("Disease not found");
+        };
+    });
+}
+
 
 async function stringMatching(tempPatientData, searchKeyword, targetSequence) {
     const result = await access_database(tempPatientData, searchKeyword, "searchDisease").then(function(result) {
@@ -180,8 +199,9 @@ app.prepare()
             if (cleanSearchQuery.length == 1) {
                 let targetQuery = cleanSearchQuery[0].replace(/\/\.+/g, '-');
                 console.log(targetQuery);
-                let searchResult = access_database(searchQuery, targetQuery, "searchByDate");
-                if (!searchResult) {
+                let searchResult = findAllDocuments(targetQuery, "searchByDate");
+                console.log(searchResult);
+                if (!searchResult || searchResult.length == 0) {
                     dialog.info("Disease not found", "Failed!");
                 } else {
                     dialog.info("Disease found", "Success!");
